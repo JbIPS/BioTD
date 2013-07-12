@@ -1,5 +1,7 @@
 package ;
 
+import haxe.Timer;
+import org.flixel.FlxObject;
 import org.flixel.util.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxGroup;
@@ -9,15 +11,18 @@ import org.flixel.FlxG;
 
 class PlayState extends FlxState
 {
+	public var ranges: FlxGroup;
+	public var rangeToTower: Map<FlxSprite, Tower>;
 
-	var playerBullets: FlxGroup;
-	var tower: Tower;
+	var monsters: FlxGroup;
+	var lastMonster: Float = 0;
 
 	/**
 	 * Function that is called up when to state is created to set it up.
 	 */
 	override public function create():Void
 	{
+		FlxG.debug = true;
 		// Set a background color
 		FlxG.bgColor = 0xff131c1b;
 		// Show the mouse (in case it hasn't been disabled)
@@ -25,43 +30,61 @@ class PlayState extends FlxState
 		FlxG.mouse.show();
 		#end
 
-		tower = new Tower();
-		//tower.makeGraphic(200, 200, 0x00ff00);
-		tower.loadGraphic("assets/data/default.png");
-		tower.x = tower.y = 100;
-		add(tower);
-
-		var numPlayerBullets:Int = 18;
-		playerBullets = new FlxGroup(numPlayerBullets);
+		monsters = new FlxGroup(20);
 		var sprite:FlxSprite;
-		for(i in 0...numPlayerBullets)
+		for(i in 0...20)
 		{
 			sprite = new FlxSprite( -100, -100);
-			sprite.makeGraphic(2, 8);
+			sprite.makeGraphic(2, 8, 0xff00FF00);
 			sprite.exists = false;
-			playerBullets.add(sprite);
+			monsters.add(sprite);
 		}
-		add(playerBullets);
+		add(monsters);
+
+		ranges = new FlxGroup(100);
+		add(ranges);
+
+		rangeToTower = new Map<FlxSprite, Tower>();
 
 		super.create();
 	}
 
 	override public function update():Void
 	{
-		//This just says if the user clicked on the game to hide the cursor
-		if(FlxG.mouse.justPressed()){
-			//FlxG.mouse.hide();
-			var bullet = cast(playerBullets.getFirstAvailable(), FlxSprite);
-			if(bullet == null)
-				bullet = cast(playerBullets.recycle(), FlxSprite);
-
-			bullet.reset(tower.x + tower.width/2 - bullet.width/2, tower.y);
-
-			var pos: FlxPoint = FlxG.mouse.getWorldPosition();
-			bullet.velocity.y = FlxG.mouse.screenY - bullet.y;
-			bullet.velocity.x = FlxG.mouse.screenX - bullet.x;
+		if(Timer.stamp() - lastMonster > 2){
+			var monster = cast(monsters.getFirstAvailable(), FlxSprite);
+			if(monster != null){
+				monster.reset(0, FlxG.height*Math.random());
+				monster.velocity.x = 20;
+				lastMonster = Timer.stamp();
+			}
 		}
 
+		FlxG.overlap(monsters, ranges, onEnterRange);
+
+		// Tower creation
+		if(FlxG.mouse.justPressed()){
+			var tower = new Tower(FlxG.mouse.screenX, FlxG.mouse.screenY);
+			FlxG.overlap(monsters, tower.bullets, onHit);
+			add(tower);
+		}
 		super.update();
+	}
+
+	/*private function getDistance(p1:FlxPoint, p2:FlxPoint):Float
+	{
+		return Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
+	}*/
+
+	private function onEnterRange(object1:FlxObject, range:FlxSprite):Void
+	{
+		if(rangeToTower.exists(range))
+			rangeToTower.get(range).fire(object1.getScreenXY());
+	}
+
+	private function onHit(object1:FlxObject, object2:FlxSprite):Void
+	{
+		object1.kill();
+		object2.kill();
 	}
 }
