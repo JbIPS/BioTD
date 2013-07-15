@@ -1,5 +1,8 @@
 package ;
 
+import openfl.Assets;
+import org.flixel.FlxTilemap;
+import org.flixel.plugin.MouseInteractionMgr;
 import haxe.Timer;
 import org.flixel.FlxObject;
 import org.flixel.util.FlxPoint;
@@ -11,10 +14,12 @@ import org.flixel.FlxG;
 
 class PlayState extends FlxState
 {
-	public var ranges: FlxGroup;
+	public var towers: FlxGroup;
 	public var rangeToTower: Map<FlxSprite, Tower>;
 
 	var monsters: FlxGroup;
+	var bullets: FlxGroup;
+
 	var lastMonster: Float = 0;
 
 	/**
@@ -29,6 +34,12 @@ class PlayState extends FlxState
 		#if !FLX_NO_MOUSE
 		FlxG.mouse.show();
 		#end
+		FlxG.addPlugin(new MouseInteractionMgr());
+
+		// Map
+		var map = new FlxTilemap();
+		map.loadMap(Assets.getText("assets/data/mapCSV_Group1_Map1.csv"), "assets/data/autotiles_alt.png", 8,8);
+		add(map);
 
 		monsters = new FlxGroup(20);
 		var sprite:FlxSprite;
@@ -41,16 +52,19 @@ class PlayState extends FlxState
 		}
 		add(monsters);
 
-		ranges = new FlxGroup(100);
-		add(ranges);
+		towers = new FlxGroup(100);
+		add(towers);
 
 		rangeToTower = new Map<FlxSprite, Tower>();
+		bullets = new FlxGroup();
 
 		super.create();
 	}
 
 	override public function update():Void
 	{
+		super.update();
+
 		if(Timer.stamp() - lastMonster > 2){
 			var monster = cast(monsters.getFirstAvailable(), FlxSprite);
 			if(monster != null){
@@ -60,21 +74,18 @@ class PlayState extends FlxState
 			}
 		}
 
-		FlxG.overlap(monsters, ranges, onEnterRange);
+		FlxG.overlap(monsters, towers, onEnterRange);
 
 		// Tower creation
 		if(FlxG.mouse.justPressed()){
 			var tower = new Tower(FlxG.mouse.screenX, FlxG.mouse.screenY);
-			FlxG.overlap(monsters, tower.bullets, onHit);
 			add(tower);
+			towers.add(tower);
+			bullets.add(tower.bullets);
 		}
-		super.update();
-	}
 
-	/*private function getDistance(p1:FlxPoint, p2:FlxPoint):Float
-	{
-		return Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
-	}*/
+		FlxG.collide(monsters, bullets, onHit);
+	}
 
 	private function onEnterRange(object1:FlxObject, range:FlxSprite):Void
 	{

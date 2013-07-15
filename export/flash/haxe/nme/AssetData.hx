@@ -66,6 +66,8 @@ class AssetData {
 			type.set ("assets/data/logo_corners.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			className.set ("assets/data/logo_light.png", nme.NME_assets_data_logo_light_png);
 			type.set ("assets/data/logo_light.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			className.set ("assets/data/mapCSV_Group1_Map1.csv", nme.NME_assets_data_mapcsv_group1_map1_csv);
+			type.set ("assets/data/mapCSV_Group1_Map1.csv", Reflect.field (AssetType, "text".toUpperCase ()));
 			className.set ("assets/data/nokiafc22.ttf", nme.NME_assets_data_nokiafc22_ttf);
 			type.set ("assets/data/nokiafc22.ttf", Reflect.field (AssetType, "font".toUpperCase ()));
 			className.set ("assets/data/stick.png", nme.NME_assets_data_stick_png);
@@ -128,6 +130,7 @@ class NME_assets_data_handle_png extends flash.display.BitmapData { public funct
 class NME_assets_data_logo_png extends flash.display.BitmapData { public function new () { super (0, 0); } }
 class NME_assets_data_logo_corners_png extends flash.display.BitmapData { public function new () { super (0, 0); } }
 class NME_assets_data_logo_light_png extends flash.display.BitmapData { public function new () { super (0, 0); } }
+class NME_assets_data_mapcsv_group1_map1_csv extends flash.utils.ByteArray { }
 class NME_assets_data_nokiafc22_ttf extends flash.text.Font { }
 class NME_assets_data_stick_png extends flash.display.BitmapData { public function new () { super (0, 0); } }
 class NME_assets_data_vcr_flixel_png extends flash.display.BitmapData { public function new () { super (0, 0); } }
