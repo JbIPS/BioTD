@@ -59,14 +59,14 @@ class Tower extends FlxGroup{
 
 	}
 
-	public function fire(target: FlxPoint):Void
+	public function fire(target: Enemy):Void
 	{
 		if(Timer.stamp() - lastFired > fireRate){
 			var bullet = cast(bullets.getFirstAvailable(), FlxSprite);
 			if(bullet != null){
 				bullet.reset(towerSprite.x + towerSprite.width/2 - bullet.width/2, towerSprite.y);
-				bullet.velocity.x = (target.x - bullet.x)*7;
-				bullet.velocity.y = (target.y - bullet.y)*7;
+				bullet.velocity.x = (target.x+target.width/2 - bullet.x)*7;
+				bullet.velocity.y = (target.y+target.height/2 - bullet.y)*7;
 			}
 			lastFired = Timer.stamp();
 		}

@@ -19,6 +19,7 @@ class PlayState extends FlxState
 
 	var monsters: FlxGroup;
 	var bullets: FlxGroup;
+	var map: FlxTilemap;
 
 	var lastMonster: Float = 0;
 
@@ -37,18 +38,20 @@ class PlayState extends FlxState
 		FlxG.addPlugin(new MouseInteractionMgr());
 
 		// Map
-		var map = new FlxTilemap();
-		map.loadMap(Assets.getText("assets/data/mapCSV_Group1_Map1.csv"), "assets/data/autotiles_alt.png", 8,8);
+		map = new FlxTilemap();
+		map.loadMap(Assets.getText("assets/data/mapCSV_Group1_Map.csv"), "assets/data/World.png", 16,16);
+		map.setTileProperties(2, 0);
 		add(map);
 
+		// Enemies
 		monsters = new FlxGroup(20);
-		var sprite:FlxSprite;
+		var enemy:Enemy;
 		for(i in 0...20)
 		{
-			sprite = new FlxSprite( -100, -100);
-			sprite.makeGraphic(2, 8, 0xff00FF00);
-			sprite.exists = false;
-			monsters.add(sprite);
+			enemy = new Enemy( -100, -100);
+			//enemy.makeGraphic(2, 8, 0xffFF0000);
+			enemy.exists = false;
+			monsters.add(enemy);
 		}
 		add(monsters);
 
@@ -66,19 +69,24 @@ class PlayState extends FlxState
 		super.update();
 
 		if(Timer.stamp() - lastMonster > 2){
-			var monster = cast(monsters.getFirstAvailable(), FlxSprite);
+			var monster = cast(monsters.getFirstAvailable(), Enemy);
 			if(monster != null){
-				monster.reset(0, FlxG.height*Math.random());
-				monster.velocity.x = 20;
+				monster.reset(0, 256+24*Math.random());
 				lastMonster = Timer.stamp();
+				var path = map.findPath(new FlxPoint(monster.x, monster.y), new FlxPoint(1015,192));
+				if(path == null)
+					trace("no path");
+				else
+					monster.followPath(path, monster.speed);
+				monster.play("normal");
 			}
 		}
 
 		FlxG.overlap(monsters, towers, onEnterRange);
 
 		// Tower creation
-		if(FlxG.mouse.justPressed()){
-			var tower = new Tower(FlxG.mouse.screenX, FlxG.mouse.screenY);
+		if(FlxG.mouse.justPressed() && map.getTile(Math.floor(FlxG.mouse.screenX/16), Math.floor(FlxG.mouse.screenY/16)) == 1){
+			var tower = new Tower(FlxG.mouse.screenX - FlxG.mouse.screenX%16, FlxG.mouse.screenY-FlxG.mouse.screenY%16);
 			add(tower);
 			towers.add(tower);
 			bullets.add(tower.bullets);
@@ -90,7 +98,7 @@ class PlayState extends FlxState
 	private function onEnterRange(object1:FlxObject, range:FlxSprite):Void
 	{
 		if(rangeToTower.exists(range))
-			rangeToTower.get(range).fire(object1.getScreenXY());
+			rangeToTower.get(range).fire(cast(object1, Enemy));
 	}
 
 	private function onHit(object1:FlxObject, object2:FlxSprite):Void
