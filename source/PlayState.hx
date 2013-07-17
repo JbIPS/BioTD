@@ -49,7 +49,6 @@ class PlayState extends FlxState
 		for(i in 0...20)
 		{
 			enemy = new Enemy( -100, -100);
-			//enemy.makeGraphic(2, 8, 0xffFF0000);
 			enemy.exists = false;
 			monsters.add(enemy);
 		}
@@ -71,9 +70,9 @@ class PlayState extends FlxState
 		if(Timer.stamp() - lastMonster > 2){
 			var monster = cast(monsters.getFirstAvailable(), Enemy);
 			if(monster != null){
-				monster.reset(0, 256+24*Math.random());
+				monster.reset(0, 256+5*Math.random());
 				lastMonster = Timer.stamp();
-				var path = map.findPath(new FlxPoint(monster.x, monster.y), new FlxPoint(1015,192));
+				var path = map.findPath(new FlxPoint(monster.x+monster.width/2, monster.y+monster.height/2), new FlxPoint(1015,192));
 				if(path == null)
 					trace("no path");
 				else
@@ -92,7 +91,7 @@ class PlayState extends FlxState
 			bullets.add(tower.bullets);
 		}
 
-		FlxG.collide(monsters, bullets, onHit);
+		FlxG.overlap(monsters, bullets, onHit);
 	}
 
 	private function onEnterRange(object1:FlxObject, range:FlxSprite):Void
@@ -101,9 +100,9 @@ class PlayState extends FlxState
 			rangeToTower.get(range).fire(cast(object1, Enemy));
 	}
 
-	private function onHit(object1:FlxObject, object2:FlxSprite):Void
+	private function onHit(object1:Enemy, object2:FlxSprite):Void
 	{
-		object1.kill();
+		object1.hit();
 		object2.kill();
 	}
 }

@@ -46,7 +46,7 @@ class Tower extends FlxGroup{
 		for(i in 0...numPlayerBullets)
 		{
 			sprite = new FlxSprite( -100, -100);
-			sprite.makeGraphic(2, 2);
+			sprite.loadGraphic("assets/data/laserGreen.png");
 			sprite.exists = false;
 			bullets.add(sprite);
 		}
@@ -67,6 +67,7 @@ class Tower extends FlxGroup{
 				bullet.reset(towerSprite.x + towerSprite.width/2 - bullet.width/2, towerSprite.y);
 				bullet.velocity.x = (target.x+target.width/2 - bullet.x)*7;
 				bullet.velocity.y = (target.y+target.height/2 - bullet.y)*7;
+				bullet.angle = Math.atan2(bullet.velocity.x, -bullet.velocity.y)*180/Math.PI;
 			}
 			lastFired = Timer.stamp();
 		}

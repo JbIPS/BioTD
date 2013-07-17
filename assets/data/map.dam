@@ -4,10 +4,19 @@
   <bgColor>0x777777</bgColor>
   <viewPos x="14" y="19"/>
   <firstLayersTop>false</firstLayersTop>
-  <spriteEntries currentId="1"/>
+  <spriteEntries currentId="3">
+    <group name="New Folder" idx="2" open="true"/>
+    <sprite name="Enemy1" idx="1" className="" image="enemy1.png" width="39" height="39" preview="0" anchorX="0" anchorY="0" centerAnchor="false" boundsX="0" boundsY="0" boundsWidth="39" boundsHeight="35" constructor="" creation="" exports="true" canScale="true" canRotate="true" surfaceObject="false" tileIndex="-1" canEditFrames="true" lockRotation="true" selected="true">
+      <shapes>
+        <frame num="1">
+          <shape name="" x="23" y="21" type="point" width="0" height="0" radius="0"/>
+        </frame>
+      </shapes>
+    </sprite>
+  </spriteEntries>
   <layers>
     <group name="Group1" id="0" xScroll="1" yScroll="1" visible="true" open="true" locked="false" exports="true">
-      <maplayer name="Map" id="1" xScroll="1" yScroll="1" x="0" y="0" width="64" height="47" tileset="World.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="false" repeatY="false" selected="true">
+      <maplayer name="Map" id="1" xScroll="1" yScroll="1" x="0" y="0" width="64" height="47" tileset="World.png" tileWidth="16" tileHeight="16" visible="true" hasHits="false" drawIdx="1" collideIdx="1" eraseIdx="0" locked="false" exports="true" tileSpacingX="16" tileSpacingY="16" xStagger="0" tileOffsetX="0" tileOffsetY="0" isMaster="false" mapType="2d" hasHeight="false" repeatX="false" repeatY="false">
         <row>1,1,1,1,1,1,1,1,1,1,7,1,7,1,7,1,1,1,1,1,1,7,1,1,1,7,1,7,1,1,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</row>
         <row>1,1,1,1,1,1,1,1,1,1,7,1,7,1,7,1,1,1,7,1,7,7,1,7,1,7,1,7,7,1,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</row>
         <row>1,1,1,1,1,1,1,1,1,1,1,7,7,7,7,1,7,1,7,1,7,7,1,7,1,7,1,7,7,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</row>
@@ -56,6 +65,11 @@
         <row>1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</row>
         <row>1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1</row>
       </maplayer>
+    </group>
+    <group name="Group2" id="6" xScroll="1" yScroll="1" visible="true" open="true" locked="false" exports="true">
+      <spritelayer name="Layer1" id="7" xScroll="1" yScroll="1" visible="true" locked="false" exports="true" aligned="false" sort="false" selected="true">
+        <sprite guid="746083E2-2F0C-AA0D-05FB-314C770DF4DA" x="285.5" y="329.5" Z="0" angle="0" scaleX="1" scaleY="1" flipped="false" idx="1"/>
+      </spritelayer>
     </group>
   </layers>
   <layerTemplates/>
@@ -196,7 +210,7 @@
   </options>
   <exporter name="/Applications/DAME.app/Contents/Resources/lua/Exporters/csvTilemap.lua" spritepos="Top Left" rotatedSpritePos="false" relativePaths="false" useProjectExporterOnly="false">
     <setting name="FileExt">csv</setting>
-    <setting name="CSVDir">/Users/jbrichardet/Documents/workspace/BioTD/assets/data</setting>
+    <setting name="CSVDir">/Users/jbrichardet/Desktop</setting>
   </exporter>
   <customPropertyTypes/>
   <guides>
