@@ -27,7 +27,7 @@ class Tower extends FlxGroup{
 
 		//Tower
 		towerSprite = new FlxSprite();
-		towerSprite.loadGraphic("assets/data/default.png");
+		towerSprite.loadGraphic("assets/data/tower.png");
 		towerSprite.x = x;
 		towerSprite.y = y;
 
